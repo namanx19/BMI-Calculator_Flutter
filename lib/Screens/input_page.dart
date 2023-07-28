@@ -1,15 +1,18 @@
 // ignore_for_file: must_be_immutable, camel_case_types
-import 'package:bmi_calculator/iconContent.dart';
+import 'package:bmi_calculator/Components/iconContent.dart';
+import 'package:bmi_calculator/Screens/resultPage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'reusableCard.dart';
-import 'constants.dart';
+import 'package:bmi_calculator/Components/reusableCard.dart';
+import '../constants.dart';
+import 'package:bmi_calculator/Components/roundIconButton.dart';
+import '../Components/bottomButton.dart';
+import 'package:bmi_calculator/calculatorBrain.dart';
 
 enum gender {
   male,
   female,
 }
-
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -21,7 +24,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
 
   gender? selectedGender;
-  int height = 180;
+  int height = 170;
   int weight = 50;
   int age = 25;
 
@@ -102,8 +105,6 @@ class _InputPageState extends State<InputPage> {
                         value: height.toDouble(),
                         min: kMinHeight.toDouble(),
                         max: kMaxHeight.toDouble(),
-                        // activeColor: const Color(0xffeb1555),
-                        // inactiveColor: const Color(0xff8d8e98),
                         onChanged: (double newValue) {
                           setState(() {
                             height = newValue.round();
@@ -205,20 +206,20 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-            child: const Center(
-              child: Text(
-                'CALCULATE YOUR BMI',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500,
+          bottomButton(
+            onTap: (){
+              calculatorBrain calc = calculatorBrain(height: height, weight: weight);
+              Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => resultPage(
+                  bmiResult: calc.calculateBMI(),
+                  resultText: calc.getResult(),
+                  recommendation: calc.getRecommendation(),
                 ),
-              ),
-            ),
+                ),
+              );
+            },
+            buttonLabel: 'CALCULATE YOUR BMI',
           ),
         ],
       ),
@@ -226,23 +227,6 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
-class RoundIconButton extends StatelessWidget {
-  const RoundIconButton({required this.icon, required this.onPressed, Key? key}) : super(key: key);
 
-  final IconData icon;
-  final VoidCallback onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPressed,
-        elevation: 6.0,
-      constraints: const BoxConstraints.tightFor(
-        height: 56.0,
-        width: 56.0,
-      ),
-      shape: const CircleBorder(),
-      fillColor: const Color(0xff4c4f5e),
-      child: Icon(icon),
-    );
-  }
-}
+
+

@@ -1,7 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'input_page.dart';
+import 'Screens/input_page.dart';
 void main(){
   runApp(const bmiCalculator());
 }

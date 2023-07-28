@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import '../constants.dart';
 class iconContent extends StatelessWidget {
   iconContent({required this.icon, required this.label, Key? key}) : super(key: key);
   final IconData icon;
@@ -31,4 +32,3 @@ class iconContent extends StatelessWidget {
     );
   }
 }
-
